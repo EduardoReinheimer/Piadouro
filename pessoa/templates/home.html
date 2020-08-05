@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block principal %}
+{{form.errors}}
+<div class="row">
+  <ul class="collection col s3">
+    {% for seguindo in object.perfil.seguindo.all %}
+    <li class="collection-item avatar">
+      <img src="{{ seguindo.foto.url }}" alt="" class="circle">
+      <span class="title">
+        <a href="{% url 'perfil' seguindo.usuario.username %}">
+          {{ seguindo.usuario.username }}
+        </a>
+      </span>
+      <p>
+        Brotou por aqui {{ seguindo.usuario.date_joined|date:"d/m/Y" }}<br>
+        Seguidores: {{ seguindo.seguidores.count }}
+        Seguindo: {{ seguindo.seguindo.count }}
+      </p>
+      <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+    </li>
+    {% endfor %}
+  </ul>
+
+  {% if request.user.username in request.path %}
+  <div class="col s6">
+    <div class="row">
+      <form class="col s12" method="POST" action="{% url 'piado-create' %}">
+        {% csrf_token %}
+        <div class="row">
+          <div class="input-field col s10">
+            <textarea id="textarea1" class="materialize-textarea" name="conteudo"></textarea>
+            <label for="textarea1">Da um piu ai</label>
+          </div>
+          <button type="submit">Piar</button>
+        </div>
+      </form>
+    </div>
+    <div class="row">
+      {% for piado in object.perfil.piados.all %}
+      <div class="card">
+        <div class="card-content">
+          <p>{{ piado.conteudo }}</p>
+          <small class="right">{{ piado.data_criacao|date:"d/m/y h:m"}}</small>
+        </div>
+        <div class="card-action">
+          <a href="#">This is a link</a>
+          <a href="#">This is a link</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+{% endif %}
+{% endblock principal %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block principal %}
+<div class="row">
+    <div class="col s12 m8 l6 offset-m2 offset-l3">
+        <ul class="collection">
+            {% for user in object_list %}
+            {% if user != request.user %}
+            <li class="collection-item avatar">
+            <img src="{{ user.perfil.foto.url }}" alt="" class="circle">
+            <span class="title">{{ user.username }}</span>
+            <p> 
+                Seguidores: {{ user.perfil.seguidores.count }} | Seguindo: {{ user.perfil.seguindo.count }}
+                <br>
+                Piados: {{ user.perfil.piados.count }}
+            </p>
+            <a href="#!" class="secondary-content"><i class="material-icons">favorite_border</i></a>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock principal %}

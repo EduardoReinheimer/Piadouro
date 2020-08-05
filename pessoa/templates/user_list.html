@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load user_in %}
+
 {% block principal %}
 <div class="row">
     <div class="col s12 m8 l6 offset-m2 offset-l3">
@@ -14,7 +16,15 @@
                 <br>
                 Piados: {{ user.perfil.piados.count }}
             </p>
-            <a href="#!" class="secondary-content"><i class="material-icons">favorite_border</i></a>
+            <a href="#!" class="secondary-content">
+                <i class="material-icons">
+                    {% if user|exists:request.user.perfil.seguindo.all %}
+                        favorite
+                    {% else %}
+                        favorite_border
+                    {% endif %}
+                </i>
+            </a>
             </li>
             {% endif %}
             {% endfor %}

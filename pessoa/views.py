@@ -15,7 +15,7 @@ class Home(DetailView):
 
 class UsersList(ListView):
     template_name= 'user_list.html'
-    model = User
+    model = Perfil
 
 class Follow(RedirectView):
     permanent = False

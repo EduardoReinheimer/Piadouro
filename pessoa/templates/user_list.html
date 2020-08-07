@@ -6,19 +6,19 @@
 <div class="row">
     <div class="col s12 m8 l6 offset-m2 offset-l3">
         <ul class="collection">
-            {% for user in object_list %}
-            {% if user != request.user %}
+            {% for profile in object_list %}
+            {% if profile.usuario.id != request.user.id %}
             <li class="collection-item avatar">
-            <img src="{{ user.perfil.foto.url }}" alt="" class="circle">
-            <span class="title">{{ user.username }}</span>
+            <img src="{{ profile.foto.url }}" alt="" class="circle">
+            <span class="title">{{ profile.usuario.username.title }}</span>
             <p> 
-                Seguidores: {{ user.perfil.seguidores.count }} | Seguindo: {{ user.perfil.seguindo.count }}
+                Seguidores: {{ profile.seguidores.count }} | Seguindo: {{ profile.seguindo.count }}
                 <br>
-                Piados: {{ user.perfil.piados.count }}
+                Piados: {{ profile.piados.count }}
             </p>
-            <a href="{% url 'follow'  user.perfil.id %}" class="secondary-content">
+            <a href="{% url 'follow' profile.id %}" class="secondary-content">
                 <i class="material-icons">
-                    {% if user|exists:request.user.perfil.seguindo.all %}
+                    {% if profile|exists:request.user.perfil.seguindo.all %}
                         favorite
                     {% else %}
                         favorite_border

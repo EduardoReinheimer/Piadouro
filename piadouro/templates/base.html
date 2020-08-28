@@ -28,7 +28,7 @@
                 {% if not request.user.is_authenticated %}
                 <li><a href="{% url 'registration' %}">Criar Conta</a></li>
                 {% endif %}
-                <li><a href="">Components</a></li>
+                <li><a href="{% url 'usuarios' %}">Usuários</a></li>
                 <!-- Dropdown Trigger -->
                 {% if request.user.is_authenticated %}
                 <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">{{ request.user.first_name }}<i class="material-icons right">arrow_drop_down</i></a></li>

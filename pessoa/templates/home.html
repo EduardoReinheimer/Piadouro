@@ -19,14 +19,13 @@
     {% if request.user.username in request.path %}
     <div class="col s6">
         <div class="row">
-            <form class="col s12" method="POST" action="{% url 'piado-create' %}">
+            <form id="piar" class="col s12" method="POST" action="{% url 'piado-create' %}">
                 {% csrf_token %}
                 <div class="row">
                     <div class="input-field col s10">
                         <textarea id="textarea1" class="materialize-textarea" name="conteudo"></textarea>
                         <label for="textarea1">Da um piu ai</label>
                     </div>
-                    <button type="submit">Piar</button>
                 </div>
             </form>
         </div>
@@ -38,7 +37,7 @@
                     <small class="right">{{ piado.data_criacao|date:"d/m/y h:m"}}</small>
                 </div>
                 <div class="card-action">
-                    <a href="#">This is a link</a>
+                    <a href="{% url 'piado-delete' piado.id %}"><i class="material-icons">delete</i></a>
                     <a href="#">This is a link</a>
                 </div>
             </div>

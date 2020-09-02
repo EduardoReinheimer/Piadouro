@@ -16,20 +16,22 @@
 
 <body>
     <ul id="dropdown1" class="dropdown-content">
-        <li><a href="#!">one</a></li>
+        <li><a href="{% url 'profile-editor' %}">Perfil</a></li>
         <li><a href="#!">two</a></li>
         <li class="divider"></li>
         <li><a href="{% url 'admin:logout' %}">Sair</a></li>
     </ul>
     <nav>
         <div class="nav-wrapper">
-            <a href="#!" class="brand-logo">Logo</a>
+            <a href="{% url 'home' %}" class="brand-logo">Logo</a>
             <ul class="right hide-on-med-and-down">
                 {% if not request.user.is_authenticated %}
                 <li><a href="{% url 'registration' %}">Criar Conta</a></li>
                 {% endif %}
+                {% if request.user.is_authenticated %}
                 <li><a href="{% url 'usuarios' %}">Usuários</a></li>
                 <!-- Dropdown Trigger -->
+                {% endif %}
                 {% if request.user.is_authenticated %}
                 <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">{{ request.user.first_name }}<i class="material-icons right">arrow_drop_down</i></a></li>
                 {% endif %}

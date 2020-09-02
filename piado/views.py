@@ -2,7 +2,8 @@ from django.views.generic.edit import CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from piado.models import Piado
 from django.urls import reverse, reverse_lazy
-from django.http import HttpResponseNotAllowed, HttpResponseRedirect
+from django.http import HttpResponseRedirect
+from django.core.exceptions import PermissionDenied
 
 
 class PiadoCreate(LoginRequiredMixin, CreateView):
@@ -26,7 +27,7 @@ class PiadoDelete(LoginRequiredMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.usuario.id != request.request.user.id:
-            raise HttpResponseNotAllowed()
+            raise PermissionDenied()
         success_url = self.get_success_url()
         self.object.delete()
         return HttpResponseRedirect(success_url)

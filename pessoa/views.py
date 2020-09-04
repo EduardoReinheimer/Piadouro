@@ -10,11 +10,21 @@ from pessoa.forms import UserForm, UserProfileForm, UserEditorForm
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
 from django.urls import reverse
+from piado.models import Piado
+from django.db.models import Q
 
 
 class Home(DetailView):
     template_name = 'home.html'
     model = User
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['piados'] = Piado.objects.filter(
+            Q(usuario_id=self.object.perfil) | 
+            Q(repiados=self.object.perfil)
+            )
+        return context
 
     def get_object(self):
         return get_object_or_404(self.model, username=self.kwargs['username'])

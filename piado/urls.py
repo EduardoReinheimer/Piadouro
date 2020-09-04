@@ -1,7 +1,9 @@
 from django.urls import path
-from piado.views import PiadoCreate, PiadoDelete
+from piado.views import PiadoCreate, PiadoDelete, PiadoLike, RePiado
 
 urlpatterns = [
     path('adicionar/', PiadoCreate.as_view(), name='piado-create'),
     path('remover/<int:pk>/', PiadoDelete.as_view(), name='piado-delete'),
+    path('curtir/<int:pk>/', PiadoLike.as_view(), name='piado-like'),
+    path('repiar/<int:pk>/', RePiado.as_view(), name='repiar'),
 ]

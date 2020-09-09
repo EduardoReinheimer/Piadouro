@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block principal %}
+<div class="col s9">
+    <div class="row">
+        <div class="col s9">
+          <div class="card">
+            <div class="card-content">
+            {% if piado.usuario != request.user.perfil %}
+            <small>Repiado de: 
+              <a href="{% url 'perfil' object.usuario.usuario.username %}">@{{ piado.usuario }}</a>
+             </small>
+             <br><br>
+            {% endif %}
+              <p>{{ object.conteudo }}</p>
+            </div>
+            <div class="card-action">
+              <form class="piar" action="{% url 'piado-comment' object.id %}" method="POST">
+                {% csrf_token %}
+                <div class="row no-margin">
+                    <div class="input-field col s12 no-margin">
+                        <textarea id="textarea1" class="materialize-textarea no-margin" name="conteudo"></textarea>
+                        <label for="textarea1">Responde o piu aí</label>
+                    </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+{% endblock principal %}

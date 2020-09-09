@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% load user_in %}
+{% block seguidores %}{% endblock seguidores %}
 
 {% block principal %}
-<div class="row">
     <div class="col s12 m8 l6 offset-m2 offset-l3">
         <ul class="collection">
             {% for profile in object_list %}
@@ -30,5 +30,4 @@
             {% endfor %}
         </ul>
     </div>
-</div>
 {% endblock principal %}

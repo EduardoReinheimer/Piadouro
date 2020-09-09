@@ -1,77 +1,67 @@
-{% extends 'base.html' %} {% block principal %} {{form.errors}}
+{% extends 'base.html' %}
 {% load user_in %}
-<div class="row">
-    <ul class="collection col s3">
-        {% for seguindo in object.perfil.seguindo.all %}
-        <li class="collection-item avatar">
-            <img src="{{ seguindo.foto.url }}" alt="" class="circle">
-            <span class="title">
-        <a href="{% url 'perfil' seguindo.usuario.username %}">
-          {{ seguindo.usuario.username }}
-        </a>
-      </span>
-            <p>
-                Brotou por aqui {{ seguindo.usuario.date_joined|date:"d/m/Y" }}<br> Seguidores: {{ seguindo.seguidores.count }} Seguindo: {{ seguindo.seguindo.count }}
-            </p>
-        </li>
-        {% endfor %}
-    </ul>
 
-    
-    <div class="col s6">
-      {% if request.user.username in request.path %}
+{% block principal %}
+{{form.errors}}                              
+  <div class="col s6">
+    {% if request.user.username in request.path %}
+    <div class="row">
+      <form class="col s12 piar" method="POST" action="{% url 'piado-create' %}">
+        {% csrf_token %}
         <div class="row">
-            <form id="piar" class="col s12" method="POST" action="{% url 'piado-create' %}">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="input-field col s10">
-                        <textarea id="textarea1" class="materialize-textarea" name="conteudo"></textarea>
-                        <label for="textarea1">Da um piu ai</label>
-                    </div>
-                </div>
-            </form>
+          <div class="input-field col s10">
+            <textarea id="textarea1" class="materialize-textarea" name="conteudo"></textarea>
+            <label for="textarea1">Da um piu aí</label>
+          </div>
         </div>
-        {% endif %} 
-        <div class="row">
-            {% for piado in piados %}
-            <div class="card">
-                <div class="card-content">
-                  {% if piado.usuario != object.perfil %}
-                    <small class="card-title">Repiado de {{ piado.usuario }}</small>
-                  {% endif %}
-                    <p>{{ piado.conteudo }}</p>
-                    <small class="right">{{ piado.data_criacao|date:"d/m/y h:m"}}</small>
-                </div>
-                <div class="card-action">
-                  {% if piado.usuario == request.user.perfil %}
-                  <a href="{% url 'piado-delete' piado.id %}">
-                    <i class="material-icons">delete</i>
-                  </a>
-                  {% elif piado.usuario != request.user.perfil  and object == request.user %}
-                  <a href="{% url 'repiar' piado.id %}?next_user={{ object.username }}">
-                      <i class="material-icons">send</i>
-                  </a>
-                  {% endif %}
-                  {% if request.user != object %}
-                  <a href="{% url 'piado-like' piado.id %}?next_user={{ object.username }}">
-                    <i class="material-icons">
-                        {% if request.user.perfil|exists:piado.curtidas.all %}
-                        favorite
-                        {% else %}
-                        favorite_border
-                        {% endif %}
-                    </i>
-                  </a>
-                  <a href="{% url 'repiar' piado.id %}?next_user={{ object.username }}">
-                    {% if request.user.perfil|exists:piado.repiados.all %}
-                      <i class="material-icons">send</i>
-                      {% else %}
-                      <i class="material-icons-outlined">send</i>
-                      {% endif %}
-                  </a>
-                  {% endif %}
-                </div>
-            </div>
-            {% endfor %}
+      </form>
+    </div>
+    {% endif %}
+    <div class="row">
+      <div class="col s12">
+      {% for piado in piados %}
+      <div class="card">
+        <div class="card-content">
+          <a href="{% url 'piado-detail' piado.id %}">
+            {% if piado.usuario != object.perfil%}
+              <small class="card-title">Repiado de {{ piado.usuario }}</small>
+            {% endif %}
+            <p>{{ piado.conteudo }}</p>
+            <small class="right">{{ piado.data_criacao|date:"d/m/y h:m"}}</small>
+          </a>
         </div>
-{% endblock %}
+        <div class="card-action">
+          {% if piado.usuario == request.user.perfil %}
+          <a href="{% url 'piado-delete' piado.id %}">
+            <i class='material-icons'>delete</i>
+          </a>
+          {% elif piado.usuario != request.user.perfil and object == request.user %}
+            <a href="{% url 'repiar' piado.id %}?next_user={{ object.username }}">
+              <i class="material-icons">send</i>
+            </a>
+          {% endif %}
+          {% if request.user != object %}
+          <a href="{% url 'piado-like' piado.id %}?next_user={{ object.username }}">
+            <i class="material-icons">
+             {% if request.user.perfil|exists:piado.curtidas.all %}
+             favorite
+             {% else %}
+             favorite_border
+             {% endif %}
+            </i>
+          </a>
+          <a href="{% url 'repiar' piado.id %}?next_user={{ object.username }}">
+            {% if request.user.perfil|exists:piado.repiados.all %}
+              <i class="material-icons">send</i>
+             {% else %}
+              <i class="material-icons-outlined">send</i>
+             {% endif %}
+          </a>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock principal %}

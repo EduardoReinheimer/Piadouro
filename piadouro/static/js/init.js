@@ -10,13 +10,15 @@
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems, {});
-    var piado_form = document.querySelector('#piar');
+    var piado_forms = document.querySelectorAll('.piar');
 
-    piado_form.addEventListener('keypress', function (event) {
-        if(event.key == 'Enter'){
-            event.preventDefault();
-            event.stopPropagation();
-            piado_form.submit();
-        }
-    })
+    piado_forms.forEach(piado_form => {
+        piado_form.addEventListener('keypress', function (event) {
+            if(event.key == 'Enter'){
+                event.preventDefault();
+                event.stopPropagation();
+                piado_form.submit();
+            }
+        })
+    });
   });

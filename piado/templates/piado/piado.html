@@ -1,0 +1,34 @@
+<div class="card">
+    <div class="card-content">
+    <!-- {% if piado.usuario != request.user.perfil %}
+    <small>Repiado de: 
+      <a href="{% url 'perfil' piado.usuario.usuario.username %}">@{{ piado.usuario }}</a>
+    </small>
+     <br><br>
+    {% endif %} -->
+    {% if piado.piado_hospedeiro %}
+      <small>Em resposta ao 
+        <a href="{% url 'piado-detail' piado.piado_hospedeiro.id %}">
+          piado
+        </a>
+          de:
+        <a href="{% url 'perfil' piado.piado_hospedeiro.usuario.usuario.username %}">@{{ piado.piado_hospedeiro.usuario }}</a>
+      </small>
+    {% endif %}
+      <p>
+        {{ piado.conteudo }}
+      <small class="right">{{ piado.usuario }}</small>
+      </p>
+    </div>
+    <div class="card-action">
+      <form class="piar" action="{% url 'piado-comment' piado.id %}" method="POST">
+        {% csrf_token %}
+        <div class="row no-margin">
+            <div class="input-field col s12 no-margin">
+                <textarea id="textarea1" class="materialize-textarea no-margin" name="conteudo"></textarea>
+                <label for="textarea1">Responde o piu aí</label>
+            </div>
+        </div>
+      </form>
+    </div>
+  </div>

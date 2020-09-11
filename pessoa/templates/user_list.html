@@ -16,9 +16,9 @@
                 <br>
                 Piados: {{ profile.piados.count }}
             </p>
-            <a href="{% url 'follow' profile.id %}" class="secondary-content">
+            <a href="{% url 'follow' profile.usuario.id %}" class="secondary-content">
                 <i class="material-icons">
-                    {% if profile|exists:request.user.perfil.seguindo.all %}
+                    {% if profile.usuario|exists:request.user.perfil.seguindo.all %}
                         favorite
                     {% else %}
                         favorite_border

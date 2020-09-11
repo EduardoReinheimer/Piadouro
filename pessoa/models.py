@@ -30,7 +30,7 @@ def validador_idade(data_nascimento):
         )
 
 class Perfil(models.Model):
-    usuario = models.OneToOneField(User, on_delete=models.PROTECT)
+    usuario = models.OneToOneField(User, on_delete=models.PROTECT, related_name='perfil')
     foto = models.ImageField(upload_to='piadouro/imagens/')
     telefone = models.CharField(max_length=20)
     estado_civil = models.CharField(max_length=2, choices=ESTADO_CIVIL)
@@ -39,7 +39,7 @@ class Perfil(models.Model):
     cidade = models.CharField(max_length=64)
     desempregado = models.BooleanField()
 
-    seguindo = models.ManyToManyField('self', related_name='seguidores', symmetrical=False, null=True, blank=True)
+    seguindo = models.ManyToManyField(User, related_name='seguidores', symmetrical=False, blank=True)
 
     def __str__(self):
         return f'{self.usuario}'

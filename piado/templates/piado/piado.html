@@ -1,34 +1,51 @@
+{% load user_in %}
+
 <div class="card">
     <div class="card-content">
-    <!-- {% if piado.usuario != request.user.perfil %}
-    <small>Repiado de: 
-      <a href="{% url 'perfil' piado.usuario.usuario.username %}">@{{ piado.usuario }}</a>
-    </small>
-     <br><br>
-    {% endif %} -->
-    {% if piado.piado_hospedeiro %}
+    {% if piado.comentario_hospedeiro %}
       <small>Em resposta ao 
-        <a href="{% url 'piado-detail' piado.piado_hospedeiro.id %}">
+        <a href="{% url 'piado-detail' piado.comentario_hospedeiro.id %}">
           piado
         </a>
           de:
-        <a href="{% url 'perfil' piado.piado_hospedeiro.usuario.usuario.username %}">@{{ piado.piado_hospedeiro.usuario }}</a>
+        <a href="{% url 'perfil' piado.comentario_hospedeiro.proprietario.username %}">@{{ piado.comentario_hospedeiro.proprietario }}</a>
       </small>
     {% endif %}
       <p>
+        <a class="black-text" href="{% url 'piado-detail' piado.id %}">
         {{ piado.conteudo }}
-      <small class="right">{{ piado.usuario }}</small>
+        </a>
+      <small class="right">{{ piado.proprietario }}</small>
       </p>
     </div>
     <div class="card-action">
-      <form class="piar" action="{% url 'piado-comment' piado.id %}" method="POST">
-        {% csrf_token %}
-        <div class="row no-margin">
-            <div class="input-field col s12 no-margin">
-                <textarea id="textarea1" class="materialize-textarea no-margin" name="conteudo"></textarea>
-                <label for="textarea1">Responde o piu aí</label>
+      <div class="row">
+        <div class="col s8">
+          <form class="piar" action="{% url 'piado-comment' piado.id %}" method="POST">
+            {% csrf_token %}
+            <div class="row no-margin">
+                <div class="input-field col s12 no-margin">
+                    <textarea id="textarea1" class="materialize-textarea no-margin" name="conteudo"></textarea>
+                    <label for="textarea1">Responde o piu aí</label>
+                </div>
             </div>
+          </form>
         </div>
-      </form>
+        <div class="col s4">
+          {% if piado.proprietario == request.user %}
+          <a href="{% url 'piado-delete' piado.id %}">
+            <i class="material-icons">delete</i>
+          </a>
+          {% elif piado.proprietario != request.user %}
+          <a href="{% url 'repiar' piado.id %}?next_user={{ object.username }}">
+            {% if request.user|exists:piado.repiados.all %}
+            <i class="material-icons">send</i>
+            {% else %}
+            <i class="material-icons-outlined">send</i>
+            {% endif %}
+          </a>
+          {% endif %}
+        </div>
+      </div>
     </div>
   </div>

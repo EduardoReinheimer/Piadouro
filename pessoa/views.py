@@ -20,10 +20,7 @@ class Home(DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['piados'] = Piado.objects.filter(
-            Q(usuario_id=self.object.perfil) | 
-            Q(repiados=self.object.perfil)
-            )
+        context['piados'] = Piado.objects.filter(proprietario=self.object) 
         return context
 
     def get_object(self):
@@ -39,11 +36,11 @@ class Follow(RedirectView):
     pattern_name = 'usuarios'
 
     def get_redirect_url(self, *args, **kwargs):
-        profile_to_follow = get_object_or_404(Perfil, pk=kwargs['profile_id'])
-        if self.request.user.perfil.seguindo.filter(pk=profile_to_follow.pk).exists():
-            self.request.user.perfil.seguindo.remove(profile_to_follow)
+        user_to_follow = get_object_or_404(User, pk=kwargs['user_id'])
+        if self.request.user.perfil.seguindo.filter(pk=user_to_follow.pk).exists():
+            self.request.user.perfil.seguindo.remove(user_to_follow)
         else:
-            self.request.user.perfil.seguindo.add(profile_to_follow)
+            self.request.user.perfil.seguindo.add(user_to_follow)
         return super().get_redirect_url()
 
 class RedirectHome(LoginRequiredMixin, RedirectView):

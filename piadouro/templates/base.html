@@ -40,21 +40,21 @@
     </nav>
     <div class="">
         <div class="section">
-
             <div class="row">
-
                 {% block seguidores %}
                 <ul class="collection col s3">
                     {% for seguindo in request.user.perfil.seguindo.all %}
                     <li class="collection-item avatar">
-                        <img src="{{ seguindo.foto.url }}" alt="" class="circle">
+                        <img src="{{ seguindo.perfil.foto.url }}" alt="" class="circle">
                         <span class="title">
-                    <a href="{% url 'perfil' seguindo.usuario.username %}">
-                      {{ seguindo.usuario.username }}
+                    <a href="{% url 'perfil' seguindo.username %}">
+                      {{ seguindo.username }}
                     </a>
                   </span>
                         <p>
-                            Brotou por aqui {{ seguindo.usuario.date_joined|date:"d/m/Y" }}<br> Seguidores: {{ seguindo.seguidores.count }} Seguindo: {{ seguindo.seguindo.count }}
+                            Brotou por aqui {{ seguindo.date_joined|date:"d/m/Y" }}<br>
+                            Seguidores: {{ seguindo.seguidores.count }}
+                            Seguindo: {{ seguindo.seguindo.count }}
                         </p>
                     </li>
                     {% endfor %}

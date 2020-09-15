@@ -25,3 +25,14 @@ class Piado(models.Model):
 
     class Meta:
         ordering = ['-data_criacao']
+
+    def piado_original(self):
+        hospedeiro = self.repiado_hospedeiro
+        piado = self
+        while hospedeiro:
+            piado = hospedeiro
+            hospedeiro = hospedeiro.repiado_hospedeiro
+        return piado
+
+    def piado_comentario_hopedeiro(self):
+        return self.comentario_hospedeiro or self.repiado_hospedeiro.comentario_hospedeiro or getattr(self.repiado_hospedeiro, 'comentario_hospedeiro', None)

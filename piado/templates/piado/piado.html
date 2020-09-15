@@ -1,51 +1,70 @@
-{% load user_in %}
+{% load user_in humanize piado %}
 
 <div class="card">
-    <div class="card-content">
-    {% if piado.comentario_hospedeiro %}
-      <small>Em resposta ao 
-        <a href="{% url 'piado-detail' piado.comentario_hospedeiro.id %}">
-          piado
+  <div class="card-content">
+    <!-- Repiado por -->
+    {% if piado.repiado_hospedeiro %}
+      <small>
+        <a href="{% url 'perfil' piado.repiado_hospedeiro.proprietario.username %}">
+          @{{piado.proprietario}} repiou
         </a>
-          de:
-        <a href="{% url 'perfil' piado.comentario_hospedeiro.proprietario.username %}">@{{ piado.comentario_hospedeiro.proprietario }}</a>
       </small>
     {% endif %}
-      <p>
-        <a class="black-text" href="{% url 'piado-detail' piado.id %}">
+    <!-- Fim do repiado por -->
+    <p>
+      <!-- Proprietário original -->
+      <small>
+        {% with piado.piado_original as piado_original %}
+        @{{ piado_original.proprietario }} - {{ piado_original.data_criacao|naturaltime }}
+        {% endwith %}
+      </small>
+      <!-- Fim do Proprietário original -->
+      <!-- Comentário -->
+      {% if piado.piado_comentario_hospedeiro %}
+        <br>
+        <small>
+          Em resposta ao
+          <a href="{% url 'perfil' piado.piado_comentario_hospedeiro.proprietario.username %}">
+            @{{piado.piado_comentario_hospedeiro.proprietario}}
+          </a>
+        </small>
+      {% endif %}
+      <!-- Fim comentário -->
+      <br>
+      <a class="black-text" href="{% url 'piado-detail' piado.id %}">
         {{ piado.conteudo }}
-        </a>
-      <small class="right">{{ piado.proprietario }}</small>
-      </p>
-    </div>
-    <div class="card-action">
-      <div class="row">
-        <div class="col s8">
-          <form class="piar" action="{% url 'piado-comment' piado.id %}" method="POST">
-            {% csrf_token %}
-            <div class="row no-margin">
-                <div class="input-field col s12 no-margin">
-                    <textarea id="textarea1" class="materialize-textarea no-margin" name="conteudo"></textarea>
-                    <label for="textarea1">Responde o piu aí</label>
-                </div>
+      </a>
+      <br/>
+    </p>
+  </div>
+  <div class="card-action">
+    <div class="row">
+      <div class="col s8">
+        <form class="piar" action="{% url 'piado-comment' piado.id %}" method="POST">
+          {% csrf_token %}
+          <div class="row no-margin">
+            <div class="input-field col s12 no-margin">
+              <textarea id="textarea1" class="materialize-textarea no-margin" name="conteudo"></textarea>
+              <label for="textarea1">Responde o piu aí</label>
             </div>
-          </form>
-        </div>
-        <div class="col s4">
-          {% if piado.proprietario == request.user %}
+          </div>
+        </form>
+      </div>
+      <div class="col s4">
+        {% if piado.proprietario == request.user %}
           <a href="{% url 'piado-delete' piado.id %}">
-            <i class="material-icons">delete</i>
+            <i class='material-icons'>delete</i>
           </a>
           {% elif piado.proprietario != request.user %}
-          <a href="{% url 'repiar' piado.id %}?next_user={{ object.username }}">
-            {% if request.user|exists:piado.repiados.all %}
-            <i class="material-icons">send</i>
-            {% else %}
-            <i class="material-icons-outlined">send</i>
-            {% endif %}
-          </a>
+            <a href="{% url 'repiar' piado.id %}?next_user={{ object.username }}">
+              {% if request.user|already_repiado:piado %}
+              <i class="material-icons">send</i>
+              {% else %}
+              <i class="material-icons-outlined">send</i>
+              {% endif %}
+            </a>
           {% endif %}
-        </div>
       </div>
     </div>
   </div>
+</div>

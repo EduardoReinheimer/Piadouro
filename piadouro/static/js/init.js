@@ -21,4 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
     });
+
+    //Modal
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems, {});
   });

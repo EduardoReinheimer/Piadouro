@@ -3,19 +3,19 @@ from django.contrib.auth.models import User
 
 
 class Piado(models.Model):
-    proprietario = models.ForeignKey(User, on_delete=models.PROTECT, related_name='piados')
+    proprietario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='piados')
     curtidas = models.ManyToManyField(User, related_name='curtidas', blank=True)
 
     repiado_hospedeiro = models.ForeignKey(
         'self',
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name='repiados',
         blank=True,
         null=True)
 
     comentario_hospedeiro = models.ForeignKey(
         'self',
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name='comentarios',
         blank=True,
         null=True) 
@@ -34,5 +34,5 @@ class Piado(models.Model):
             hospedeiro = hospedeiro.repiado_hospedeiro
         return piado
 
-    def piado_comentario_hopedeiro(self):
-        return self.comentario_hospedeiro or self.repiado_hospedeiro.comentario_hospedeiro or getattr(self.repiado_hospedeiro, 'comentario_hospedeiro', None)
+    def piado_comentario_hospedeiro(self):
+        return self.comentario_hospedeiro or getattr(self.repiado_hospedeiro, 'comentario_hospedeiro', None)

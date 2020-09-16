@@ -30,7 +30,7 @@ def validador_idade(data_nascimento):
         )
 
 class Perfil(models.Model):
-    usuario = models.OneToOneField(User, on_delete=models.PROTECT, related_name='perfil')
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='perfil')
     foto = models.ImageField(upload_to='piadouro/imagens/')
     telefone = models.CharField(max_length=20)
     estado_civil = models.CharField(max_length=2, choices=ESTADO_CIVIL)

@@ -4,7 +4,7 @@
 {% block principal %}
 {{form.errors}}                              
   <div class="col s6">
-    {% if request.user.username in request.path %}
+    {% if request.path == '/' %}
     <div class="row">
       <form class="col s12 piar" method="POST" action="{% url 'piado-create' %}">
         {% csrf_token %}

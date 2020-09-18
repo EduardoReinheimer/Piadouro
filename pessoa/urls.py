@@ -1,5 +1,5 @@
 from django.urls import path
-from pessoa.views import Home, UsersList, Follow, Registration, ProfileEditor
+from pessoa.views import Home, UsersList, Follow, Registration, ProfileEditor, UserDetail
 
 urlpatterns = [
     path('', Home.as_view(), name='home'),
@@ -7,5 +7,5 @@ urlpatterns = [
     path('editor-perfil/', ProfileEditor.as_view(), name='profile-editor'),
     path('usuarios/', UsersList.as_view(), name='usuarios'),
     path('seguir/<int:user_id>', Follow.as_view(), name='follow'),
-    path('<username>/', Home.as_view(), name='perfil')
+    path('<str:username>/', UserDetail.as_view(), name='perfil')
 ]

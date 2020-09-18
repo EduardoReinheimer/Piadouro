@@ -25,6 +25,19 @@ class Home(LoginRequiredMixin, TemplateView):
         ) 
         return context
 
+class UserDetail(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = 'home.html'
+
+    def get_object(self, *args, **kwargs):
+        return get_object_or_404(self.model, username=self.kwargs['username'])
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['piados'] = Piado.objects.filter(proprietario=self.object)
+        return context
+
+
 class UsersList(ListView):
     template_name= 'user_list.html'
     model = Perfil

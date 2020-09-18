@@ -20,3 +20,12 @@
 .no-margin {
   margin: 0;
 }
+
+.no-margin-bottom {
+  margin-bottom: 0;;
+}
+
+.circle.piado {
+  width: 48px;
+  height: 48px;
+}

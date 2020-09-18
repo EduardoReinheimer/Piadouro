@@ -85,11 +85,11 @@
             <button type="submit" form="form_comment_{{ piado.id }}" class="modal-close waves-effect waves-green btn-flat">Comentar</button>
           </div>
         </div>
-        <a href="{% url 'repiar' piado.id %}?next_user={{ object.username }}" alt="Repiados">
+        <a href="{% url 'repiar' piado.id %}?next_page={{ request.path }}" alt="Repiados">
           <i class="material-icons">transform</i>
           {{ piado.repiados.count }}
         </a>
-        <a href="{% url 'piado-like' piado.id %}?next_user={{ object.username }}" alt="Curtidas">
+        <a href="{% url 'piado-like' piado.id %}?next_page={{ request.path }}" alt="Curtidas">
           <i class="material-icons">
             {% if request.user|already_like:piado %}
             favorite

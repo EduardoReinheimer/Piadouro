@@ -38,11 +38,10 @@
             </ul>
         </div>
     </nav>
-    <div class="">
         <div class="section">
             <div class="row">
                 {% block seguidores %}
-                <ul class="collection col s3">
+                <ul class="collection col l3 hide-on-med-and-down">
                     {% for seguindo in request.user.perfil.seguindo.all %}
                     <li class="collection-item avatar">
                         <img src="{{ seguindo.perfil.foto.url }}" alt="" class="circle">
@@ -63,11 +62,7 @@
                 {% block principal %} {% endblock principal %}
 
             </div>
-            
-
         </div>
-        <br><br>
-    </div>
 
     <footer class="page-footer cyan">
         <div class="container">

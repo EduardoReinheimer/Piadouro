@@ -43,7 +43,11 @@ class PiadoLike(LoginRequiredMixin, UpdateView):
     model = Piado
 
     def get(self, request, *args, **kwargs):
-        success_url = reverse('perfil', args=[request.GET['next_user']])
+        if request.GET.get('next_page'):
+            success_url = request.GET.get('next_page')
+        else:
+            success_url = reverse('home')
+
         self.object = self.get_object()
         if self.object.curtidas.filter(id=request.user.id).exists():
             self.object.curtidas.remove(request.user.id)

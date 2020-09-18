@@ -3,7 +3,7 @@
 
 {% block principal %}
 {{form.errors}}                              
-  <div class="col s6">
+  <div class="col s12 m6 offset-m3 offset-l1">
     {% if request.path == '/' %}
     <div class="row">
       <form class="col s12 piar" method="POST" action="{% url 'piado-create' %}">

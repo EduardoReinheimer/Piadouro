@@ -6,7 +6,11 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
-    <title>Starter Template - Materialize</title>
+    <title>
+        {% block pagetitle %}
+        {{ page_title }}
+        {% endblock pagetitle %}
+    </title>
 
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
@@ -23,7 +27,7 @@
     </ul>
     <nav>
         <div class="nav-wrapper cyan">
-            <a href="{% url 'home' %}" class="brand-logo">Logo</a>
+            <a href="{% url 'home' %}" class="brand-logo">Piadouro</a>
             <ul class="right hide-on-med-and-down">
                 {% if not request.user.is_authenticated %}
                 <li><a href="{% url 'registration' %}">Criar Conta</a></li>

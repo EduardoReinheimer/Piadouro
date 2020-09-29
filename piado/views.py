@@ -6,6 +6,7 @@ from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
+from piadouro.mixins.page_title import PageTitleMixin
 
 
 class PiadoCreate(LoginRequiredMixin, CreateView):
@@ -56,7 +57,6 @@ class PiadoLike(LoginRequiredMixin, UpdateView):
 
         return HttpResponseRedirect(success_url)
 
-
 class RePiado(LoginRequiredMixin, CreateView):
     model = Piado
 
@@ -82,11 +82,12 @@ class RePiado(LoginRequiredMixin, CreateView):
             novo_piado.save()
         return HttpResponseRedirect(success_url)
 
-
-class PiadoView(LoginRequiredMixin, DetailView):
+class PiadoView(PageTitleMixin, LoginRequiredMixin, DetailView):
     model = Piado
     template_name = 'piado/detail.html'
-
+    
+    def get_page_title(self):
+        return f'Piado de {self.object.proprietario.first_name}'
 
 class PiadoComment(LoginRequiredMixin, CreateView):
     model = Piado

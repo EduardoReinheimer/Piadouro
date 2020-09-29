@@ -12,22 +12,29 @@ from django.contrib.auth import authenticate, login
 from django.urls import reverse
 from piado.models import Piado
 from django.db.models import Q
+from piadouro.mixins.page_title import PageTitleMixin
 
 
-class Home(LoginRequiredMixin, TemplateView):
+class Home(PageTitleMixin, LoginRequiredMixin, TemplateView):
     template_name = 'home.html'
+    
+    def get_page_title(self):
+        return f'Home de {self.request.user.first_name}'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['piados'] = Piado.objects.filter(
             Q(proprietario=self.request.user) |
             Q(proprietario__in=self.request.user.perfil.seguindo.all())
-        ) 
+        )
         return context
 
-class UserDetail(LoginRequiredMixin, DetailView):
+class UserDetail(PageTitleMixin, LoginRequiredMixin, DetailView):
     model = User
     template_name = 'home.html'
+
+    def get_page_title(self):
+        return f'Timeline de {self.object.first_name}'
 
     def get_object(self, *args, **kwargs):
         return get_object_or_404(self.model, username=self.kwargs['username'])
@@ -37,10 +44,10 @@ class UserDetail(LoginRequiredMixin, DetailView):
         context['piados'] = Piado.objects.filter(proprietario=self.object)
         return context
 
-
-class UsersList(ListView):
+class UsersList(PageTitleMixin, ListView):
     template_name= 'user_list.html'
     model = Perfil
+    page_title = 'Lista de usuários'
 
 class Follow(RedirectView):
     permanent = False
@@ -55,16 +62,18 @@ class Follow(RedirectView):
             self.request.user.perfil.seguindo.add(user_to_follow)
         return super().get_redirect_url()
      
-class Registration(CreateView):
+class Registration(PageTitleMixin, CreateView):
     model = User
     template_name = 'create_user.html'
     form_class = UserForm
+    page_title = 'Criar Conta'
 
     def get_context_data(self, *args, **kwargs):
-        context = {
+        context = super().get_context_data(*args, **kwargs)
+        context.update({
             'action': reverse('registration'),
             'button_text': 'Cadastrar',
-        }
+        })
         context['form'] = self.get_form()
 
         if self.request.method == 'POST':
@@ -93,19 +102,21 @@ class Registration(CreateView):
             
         return self.render_to_response(context)
 
-class ProfileEditor(LoginRequiredMixin, UpdateView):
+class ProfileEditor(PageTitleMixin, LoginRequiredMixin, UpdateView):
     model = User
     template_name = 'create_user.html'
     form_class = UserEditorForm
+    page_title = 'Editar Perfil'
 
     def get_object(self, queryset=None):
         return get_object_or_404(self.model, id=self.request.user.id)
 
     def get_context_data(self, *args, **kwargs):
-        context = {
+        context = super().get_context_data(*args, **kwargs)
+        context.update({
             'action': reverse('profile-editor'),
             'button_text': 'Atualizar',
-        }
+        })
         self.object = self.get_object()
         context['form'] = self.get_form()
 

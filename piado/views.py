@@ -1,12 +1,13 @@
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from piado.models import Piado
+from piado.models import Piado, Hashtag
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from piadouro.mixins.page_title import PageTitleMixin
+import string
 
 
 class PiadoCreate(LoginRequiredMixin, CreateView):
@@ -15,8 +16,15 @@ class PiadoCreate(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.proprietario = self.request.user
+        hashtags = []
+        form.save()
+        for word in form.cleaned_data['conteudo'].split(' '):
+            if word.startswith('#'):
+                hashtags.append(Hashtag(conteudo=word.strip(string.punctuation)))
+        Hashtag.objects.bulk_create(hashtags, ignore_conflicts=True)
+        form.instance.hashtags.add(*list(Hashtag.objects.filter(conteudo__in=hashtags)))
         return super().form_valid(form)
-    
+
     def form_invalid(self, form):
         return HttpResponseRedirect(reverse('home'))
 

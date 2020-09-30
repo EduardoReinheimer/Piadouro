@@ -23,7 +23,6 @@ class PiadoCreate(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('home')
 
-
 class PiadoDelete(LoginRequiredMixin, DeleteView):
     model = Piado
     success_url = reverse_lazy('home')
@@ -38,7 +37,6 @@ class PiadoDelete(LoginRequiredMixin, DeleteView):
         success_url = self.get_success_url()
         self.object.delete()
         return HttpResponseRedirect(success_url)
-
 
 class PiadoLike(LoginRequiredMixin, UpdateView):
     model = Piado

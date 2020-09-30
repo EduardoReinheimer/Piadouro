@@ -42,6 +42,19 @@
             </ul>
         </div>
     </nav>
+    {% if request.user.is_authenticated %}
+    <nav>
+        <div class="nav-wrapper cyan">
+            <form action="{% url 'home' %}" method="GET">
+                <div class="input-field">
+                <input id="q" name="q" type="search" required placeholder="Pesquisar..." value="{{q}}">
+                <label class="label-icon" for="search"><i class="material-icons">search</i>{{ form.context }}</label>
+                <i href="{% url 'home' %}" class="material-icons">close</i>
+                </div>
+            </form>
+        </div>
+    </nav>
+    {% endif %}
         <div class="section">
             <div class="row">
                 {% block seguidores %}

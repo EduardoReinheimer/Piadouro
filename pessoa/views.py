@@ -23,10 +23,15 @@ class Home(PageTitleMixin, LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['piados'] = Piado.objects.filter(
-            Q(proprietario=self.request.user) |
-            Q(proprietario__in=self.request.user.perfil.seguindo.all())
-        )
+        q = self.request.GET.get('q', False)
+        if not q:
+            context['piados'] = Piado.objects.filter(
+                Q(proprietario=self.request.user) |
+                Q(proprietario__in=self.request.user.perfil.seguindo.all())
+            )
+        else:
+            context['piados'] = Piado.objects.filter(conteudo__icontains=q)
+            context['q'] = q
         return context
 
 class UserDetail(PageTitleMixin, LoginRequiredMixin, DetailView):

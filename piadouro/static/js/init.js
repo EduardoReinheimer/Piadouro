@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems, {});
     var comentario_forms = document.querySelectorAll('.piar');
+    var clickable_icons = document.querySelectorAll('i[href]');
   
     comentario_forms.forEach(comentario_form => {
       comentario_form.addEventListener('submit', function (event) {
@@ -20,6 +21,12 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   
+    clickable_icons.forEach(icon => {
+      icon.addEventListener('click', event => {
+        location.href = target.getAttribute('href');
+      })
+    })
+
     // Modal
     var elems = document.querySelectorAll('.modal');
     var instances = M.Modal.init(elems, {});

@@ -34,9 +34,10 @@
                 {% endif %}
                 {% if request.user.is_authenticated %}
                 <li><a href="{% url 'usuarios' %}">Usuários</a></li>
-                <!-- Dropdown Trigger -->
+                <li><a href="{% url 'hashtags' %}">Hashtags</a></li>
                 {% endif %}
                 {% if request.user.is_authenticated %}
+                <!-- Dropdown Trigger -->
                 <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">{{ request.user.first_name }}<i class="material-icons right">arrow_drop_down</i></a></li>
                 {% endif %}
             </ul>

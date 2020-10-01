@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.views.generic.base import RedirectView, TemplateView
 from pessoa.models import Perfil
+from piado.models import Hashtag
 from django.contrib.auth.mixins import LoginRequiredMixin
 from pessoa.forms import UserForm, UserProfileForm, UserEditorForm
 from django.shortcuts import redirect
@@ -50,9 +51,15 @@ class UserDetail(PageTitleMixin, LoginRequiredMixin, DetailView):
         return context
 
 class UsersList(PageTitleMixin, ListView):
-    template_name= 'user_list.html'
+    template_name = 'user_list.html'
     model = Perfil
     page_title = 'Lista de usuários'
+
+class HashtagsList(PageTitleMixin, ListView):
+    template_name = 'hashtag_list.html'
+    model = Hashtag
+    page_title = 'Hashtags'
+
 
 class Follow(RedirectView):
     permanent = False

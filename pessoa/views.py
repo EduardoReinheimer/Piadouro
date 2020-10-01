@@ -109,6 +109,7 @@ class Registration(PageTitleMixin, CreateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        self.object = None
         context = self.get_context_data()
 
         if context['form'].is_valid() and context['profile_form'].is_valid():
@@ -153,6 +154,7 @@ class ProfileEditor(PageTitleMixin, LoginRequiredMixin, UpdateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        self.object = None
         context = self.get_context_data()
 
         if context['form'].is_valid() and context['profile_form'].is_valid():

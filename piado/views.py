@@ -1,5 +1,6 @@
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from piado.models import Piado, Hashtag
 from django.urls import reverse, reverse_lazy
@@ -111,3 +112,23 @@ class PiadoComment(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('piado-detail', args=[self.kwargs['hospedeiro']])
+
+class HashtagsList(PageTitleMixin, LoginRequiredMixin, ListView):
+    template_name = 'piado/hashtag_list.html'
+    model = Hashtag
+    page_title = 'Hashtags'
+
+class HashtagDetail(PageTitleMixin, LoginRequiredMixin, DetailView):
+    model = Hashtag
+    template_name = 'piado/hashtag_detail.html'
+
+    def get_page_title(self):
+        return f'Piados com #{ self.object.conteudo }'
+
+    def get_object(self, *args, **kwargs):
+        return get_object_or_404(self.model, conteudo=self.kwargs['conteudo'])
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['piados'] = Piado.objects.filter(hashtags=self.object)
+        return context

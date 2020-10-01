@@ -55,26 +55,6 @@ class UsersList(PageTitleMixin, ListView):
     model = Perfil
     page_title = 'Lista de usuários'
 
-class HashtagsList(PageTitleMixin, LoginRequiredMixin, ListView):
-    template_name = 'hashtag_list.html'
-    model = Hashtag
-    page_title = 'Hashtags'
-
-class HashtagDetail(PageTitleMixin, LoginRequiredMixin, DetailView):
-    model = Hashtag
-    template_name = 'hashtag_detail.html'
-
-    def get_page_title(self):
-        return f'Piados com #{ self.object.conteudo }'
-
-    def get_object(self, *args, **kwargs):
-        return get_object_or_404(self.model, conteudo=self.kwargs['conteudo'])
-    
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['piados'] = Piado.objects.filter(hashtags=self.object)
-        return context
-
 class Follow(RedirectView):
     permanent = False
     query_string= False 

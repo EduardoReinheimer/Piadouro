@@ -60,6 +60,20 @@ class HashtagsList(PageTitleMixin, ListView):
     model = Hashtag
     page_title = 'Hashtags'
 
+class HashtagDetail(PageTitleMixin, LoginRequiredMixin, DetailView):
+    model = Hashtag
+    template_name = 'hashtag_detail.html'
+
+    def get_page_title(self):
+        return f'Piados com #{ self.object.conteudo }'
+
+    def get_object(self, *args, **kwargs):
+        return get_object_or_404(self.model, id=self.kwargs['hashtag_id'])
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['piados'] = Piado.objects.filter(hashtags=self.object)
+        return context
 
 class Follow(RedirectView):
     permanent = False
@@ -73,7 +87,7 @@ class Follow(RedirectView):
         else:
             self.request.user.perfil.seguindo.add(user_to_follow)
         return super().get_redirect_url()
-     
+
 class Registration(PageTitleMixin, CreateView):
     model = User
     template_name = 'create_user.html'

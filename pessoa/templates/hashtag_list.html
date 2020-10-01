@@ -8,7 +8,7 @@
         <ul class="collection">
             {% for hashtag in object_list %}
             <li class="collection-item avatar">
-            <a href="{% url 'hashtag-detail' hashtag.id %}" class="title">#{{ hashtag.conteudo }}</a>
+            <a href="{% url 'hashtag-detail' hashtag.conteudo %}" class="title">#{{ hashtag.conteudo }}</a>
             </li>
             {% endfor %}
         </ul>

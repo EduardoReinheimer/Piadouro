@@ -8,7 +8,7 @@ urlpatterns = [
     path('usuarios/', UsersList.as_view(), name='usuarios'),
     path('hashtags/', HashtagsList.as_view(), name='hashtags'),
     path('seguir/<int:user_id>', Follow.as_view(), name='follow'),
-    path('hashtags/<int:hashtag_id>', HashtagDetail.as_view(), name='hashtag-detail'),
+    path('hashtags/<str:conteudo>', HashtagDetail.as_view(), name='hashtag-detail'),
     path('<str:username>/', UserDetail.as_view(), name='perfil'),
     
 ]

@@ -55,7 +55,7 @@ class UsersList(PageTitleMixin, ListView):
     model = Perfil
     page_title = 'Lista de usuários'
 
-class HashtagsList(PageTitleMixin, ListView):
+class HashtagsList(PageTitleMixin, LoginRequiredMixin, ListView):
     template_name = 'hashtag_list.html'
     model = Hashtag
     page_title = 'Hashtags'
@@ -68,7 +68,7 @@ class HashtagDetail(PageTitleMixin, LoginRequiredMixin, DetailView):
         return f'Piados com #{ self.object.conteudo }'
 
     def get_object(self, *args, **kwargs):
-        return get_object_or_404(self.model, id=self.kwargs['hashtag_id'])
+        return get_object_or_404(self.model, conteudo=self.kwargs['conteudo'])
     
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)

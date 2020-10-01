@@ -27,7 +27,7 @@
     </ul>
     <nav>
         <div class="nav-wrapper cyan">
-            <a href="{% url 'home' %}" class="brand-logo">Piadouro</a>
+            <a href="{% url 'home' %}" class="brand-logo"><img class="logo" src="{% static 'img/chick.png' %}" alt="Piadouro"> Piadouro</a>
             <ul class="right hide-on-med-and-down">
                 {% if not request.user.is_authenticated %}
                 <li><a href="{% url 'registration' %}">Criar Conta</a></li>

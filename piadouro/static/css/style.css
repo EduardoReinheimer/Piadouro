@@ -29,3 +29,19 @@
   width: 48px;
   height: 48px;
 }
+
+.logo {
+  object-fit: scale-down;
+  width: 48px;
+  height: 48px;
+  vertical-align: middle;
+}
+
+.brand-logo {
+  align-content: center;
+  vertical-align: middle;
+}
+
+.brand-logo:hover {
+  opacity: 70%;
+}

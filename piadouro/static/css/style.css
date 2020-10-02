@@ -44,4 +44,5 @@
 
 .brand-logo:hover {
   opacity: 70%;
+  filter: blur(2px);
 }

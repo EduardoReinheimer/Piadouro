@@ -21,7 +21,7 @@ class PiadoCreate(LoginRequiredMixin, CreateView):
         form.save()
         for word in form.cleaned_data['conteudo'].split(' '):
             if word.startswith('#'):
-                hashtags.append(Hashtag(conteudo=word.strip(string.punctuation)))
+                hashtags.append(Hashtag(conteudo=word.strip(string.punctuation).lower()))
         Hashtag.objects.bulk_create(hashtags, ignore_conflicts=True)
         form.instance.hashtags.add(*list(Hashtag.objects.filter(conteudo__in=hashtags)))
         return super().form_valid(form)
@@ -126,9 +126,9 @@ class HashtagDetail(PageTitleMixin, LoginRequiredMixin, DetailView):
         return f'Piados com #{ self.object.conteudo }'
 
     def get_object(self, *args, **kwargs):
-        return get_object_or_404(self.model, conteudo=self.kwargs['conteudo'])
+        return get_object_or_404(self.model, conteudo=self.kwargs['conteudo'].lower())
     
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['piados'] = Piado.objects.filter(hashtags=self.object)
+        context['piados'] = self.object.piados.all()
         return context

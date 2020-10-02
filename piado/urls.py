@@ -9,5 +9,5 @@ urlpatterns = [
     path('repiar/<int:pk>/', RePiado.as_view(), name='repiar'),
     path('<int:pk>/', PiadoView.as_view(), name='piado-detail'),
     path('comentario/<int:hospedeiro>/', PiadoComment.as_view(), name='piado-comment'),
-    path('hashtags/<str:conteudo>', HashtagDetail.as_view(), name='hashtag-detail'),
+    path('hashtags/<slug:conteudo>', HashtagDetail.as_view(), name='hashtag-detail'),
 ]
